@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
     return NextResponse.json({ success: true });
   } catch (err) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
   }
 }
