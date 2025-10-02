@@ -20,12 +20,37 @@ const whatsappLink = `https://wa.me/${whatsappNumber}`;
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
   const pathname = usePathname();
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+    const threshold = 40;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (window.scrollY <= threshold) {
+            setShowNavbar(true);
+          } else if (window.scrollY > lastScrollY) {
+            setShowNavbar(false);
+          } else if (window.scrollY < lastScrollY) {
+            setShowNavbar(true);
+          }
+          lastScrollY = window.scrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav
-      className="fixed top-0 left-0 w-full z-40 transition-all duration-300 px-0 md:px-10 py-0 flex items-center justify-center bg-white/50 backdrop-blur-md"
-      style={{ borderBottom: '1px solid #e5e7eb', borderRadius: '0 0 12px 12px' }}
+      className={`fixed top-0 left-0 w-full z-40 transition-transform duration-500 px-0 md:px-10 py-0 flex items-center justify-center bg-white/50 backdrop-blur-md${showNavbar ? '' : ' -translate-y-full pointer-events-none'}`}
+      style={{ borderBottom: '1px solid #e5e7eb', borderRadius: '0 0 12px 12px', transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)' }}
     >
       {/* Navbar Content (desktop + mobile trigger) */}
       <div className="flex items-center w-full max-w-4xl mx-auto py-2">

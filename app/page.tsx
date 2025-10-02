@@ -10,7 +10,7 @@ import Allabout from "./components/Allabout";
 import Testimonials from "./components/Testimonials";
 import FAQ from "../app/components/FAQ";
 import ContactForms from "../app/components/ContactForms";
-
+import Chatbot from "./components/Chatbot";
 export default function Home() {
   return (
     <main className="w-full min-h-screen bg-[#f8fafc] flex flex-col items-center">
@@ -25,7 +25,9 @@ export default function Home() {
         <Testimonials />
         <ContactForms />
         <FAQ />
+        <Chatbot />
       </div>
+
     </main>
   );
 }
